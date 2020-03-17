@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 1.1
+
+- cleanup and bump composer dependencies
+- removed mailer implementations: `twig` and `swiftmailer` (using Noop by default, configure your own!)
+
 ### 1.0
 
 - changed package name to `kimai/user-bundle`

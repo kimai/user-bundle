@@ -114,18 +114,6 @@ class FOSUserExtensionTest extends TestCase
         $config['registration'] = false;
         $loader->load([$config], $this->configuration);
         $this->assertNotHasDefinition('fos_user.registration.form.factory');
-
-        $mailer = $this->configuration->getDefinition('fos_user.mailer.default');
-        $parameters = $this->configuration->getParameterBag()->resolveValue(
-            $mailer->getArgument(3)
-        );
-        $this->assertSame(
-            [
-                'confirmation' => ['no-registration@acme.com' => 'Acme Ltd'],
-                'resetting' => ['admin@acme.org' => 'Acme Corp'],
-            ],
-            $parameters['from_email']
-        );
     }
 
     public function testDisableResetting()
@@ -136,18 +124,6 @@ class FOSUserExtensionTest extends TestCase
         $config['resetting'] = false;
         $loader->load([$config], $this->configuration);
         $this->assertNotHasDefinition('fos_user.resetting.form.factory');
-
-        $mailer = $this->configuration->getDefinition('fos_user.mailer.default');
-        $parameters = $this->configuration->getParameterBag()->resolveValue(
-            $mailer->getArgument(3)
-        );
-        $this->assertSame(
-            [
-                'confirmation' => ['admin@acme.org' => 'Acme Corp'],
-                'resetting' => ['no-resetting@acme.com' => 'Acme Ltd'],
-            ],
-            $parameters['from_email']
-        );
     }
 
     public function testDisableProfile()
