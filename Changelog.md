@@ -1,7 +1,7 @@
 Changelog
 =========
 
-### 3.0
+### 1.0
 
 - changed package name to `kimai/user-bundle`
 - removed support for mongo db
