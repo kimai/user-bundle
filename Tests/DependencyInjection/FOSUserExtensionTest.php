@@ -62,17 +62,6 @@ class FOSUserExtensionTest extends TestCase
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
-    public function testUserLoadThrowsExceptionUnlessGroupModelClassSet()
-    {
-        $loader = new FOSUserExtension();
-        $config = $this->getFullConfig();
-        unset($config['group']['group_class']);
-        $loader->load([$config], new ContainerBuilder());
-    }
-
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testUserLoadThrowsExceptionUnlessUserModelClassSet()
     {
         $loader = new FOSUserExtension();
@@ -134,16 +123,6 @@ class FOSUserExtensionTest extends TestCase
         $config['profile'] = false;
         $loader->load([$config], $this->configuration);
         $this->assertNotHasDefinition('fos_user.profile.form.factory');
-    }
-
-    public function testDisableChangePassword()
-    {
-        $this->configuration = new ContainerBuilder();
-        $loader = new FOSUserExtension();
-        $config = $this->getEmptyConfig();
-        $config['change_password'] = false;
-        $loader->load([$config], $this->configuration);
-        $this->assertNotHasDefinition('fos_user.change_password.form.factory');
     }
 
     /**
@@ -214,7 +193,6 @@ class FOSUserExtensionTest extends TestCase
         $this->assertParameter('orm', 'fos_user.storage');
         $this->assertParameter(null, 'fos_user.model_manager_name');
         $this->assertAlias('fos_user.user_manager.default', 'fos_user.user_manager');
-        $this->assertNotHasDefinition('fos_user.group_manager');
     }
 
     public function testUserLoadManagerClass()
@@ -224,17 +202,13 @@ class FOSUserExtensionTest extends TestCase
         $this->assertParameter('orm', 'fos_user.storage');
         $this->assertParameter('custom', 'fos_user.model_manager_name');
         $this->assertAlias('acme_my.user_manager', 'fos_user.user_manager');
-        $this->assertAlias('fos_user.group_manager.default', 'fos_user.group_manager');
     }
 
     public function testUserLoadFormClass()
     {
         $this->createFullConfiguration();
 
-        $this->assertParameter('acme_my_profile', 'fos_user.profile.form.type');
         $this->assertParameter('acme_my_registration', 'fos_user.registration.form.type');
-        $this->assertParameter('acme_my_group', 'fos_user.group.form.type');
-        $this->assertParameter('acme_my_change_password', 'fos_user.change_password.form.type');
         $this->assertParameter('acme_my_resetting', 'fos_user.resetting.form.type');
     }
 
@@ -242,9 +216,7 @@ class FOSUserExtensionTest extends TestCase
     {
         $this->createEmptyConfiguration();
 
-        $this->assertParameter('fos_user_profile_form', 'fos_user.profile.form.name');
         $this->assertParameter('fos_user_registration_form', 'fos_user.registration.form.name');
-        $this->assertParameter('fos_user_change_password_form', 'fos_user.change_password.form.name');
         $this->assertParameter('fos_user_resetting_form', 'fos_user.resetting.form.name');
     }
 
@@ -252,10 +224,7 @@ class FOSUserExtensionTest extends TestCase
     {
         $this->createFullConfiguration();
 
-        $this->assertParameter('acme_profile_form', 'fos_user.profile.form.name');
         $this->assertParameter('acme_registration_form', 'fos_user.registration.form.name');
-        $this->assertParameter('acme_group_form', 'fos_user.group.form.name');
-        $this->assertParameter('acme_change_password_form', 'fos_user.change_password.form.name');
         $this->assertParameter('acme_resetting_form', 'fos_user.resetting.form.name');
     }
 
@@ -263,10 +232,7 @@ class FOSUserExtensionTest extends TestCase
     {
         $this->createEmptyConfiguration();
 
-        $this->assertHasDefinition('fos_user.profile.form.factory');
         $this->assertHasDefinition('fos_user.registration.form.factory');
-        $this->assertNotHasDefinition('fos_user.group.form.factory');
-        $this->assertHasDefinition('fos_user.change_password.form.factory');
         $this->assertHasDefinition('fos_user.resetting.form.factory');
     }
 
@@ -274,10 +240,7 @@ class FOSUserExtensionTest extends TestCase
     {
         $this->createFullConfiguration();
 
-        $this->assertHasDefinition('fos_user.profile.form.factory');
         $this->assertHasDefinition('fos_user.registration.form.factory');
-        $this->assertHasDefinition('fos_user.group.form.factory');
-        $this->assertHasDefinition('fos_user.change_password.form.factory');
         $this->assertHasDefinition('fos_user.resetting.form.factory');
     }
 
@@ -435,11 +398,6 @@ profile:
         type: acme_my_profile
         name: acme_profile_form
         validation_groups: [acme_profile]
-change_password:
-    form:
-        type: acme_my_change_password
-        name: acme_change_password_form
-        validation_groups: [acme_change_password]
 registration:
     confirmation:
         from_email:
@@ -468,12 +426,6 @@ service:
     email_canonicalizer: acme_my.email_canonicalizer
     username_canonicalizer: acme_my.username_canonicalizer
     user_manager: acme_my.user_manager
-group:
-    group_class: Acme\MyBundle\Entity\Group
-    form:
-        type: acme_my_group
-        name: acme_group_form
-        validation_groups: [acme_group]
 EOF;
         $parser = new Parser();
 

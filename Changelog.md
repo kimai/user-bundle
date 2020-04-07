@@ -1,6 +1,13 @@
 Changelog
 =========
 
+### 1.2
+
+- fixed several event deprecations
+- removed group controller and logic (user entity change!)
+- removed change password controller and logic
+- removed show and edit profile controller and logic
+
 ### 1.1
 
 - cleanup and bump composer dependencies
