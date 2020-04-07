@@ -6,7 +6,7 @@ Changelog
 - fixed several event deprecations
 - removed group controller and logic (user entity change!)
 - removed change password controller and logic
-- removed profile controller and logic
+- removed show and edit profile controller and logic
 
 ### 1.1
 
