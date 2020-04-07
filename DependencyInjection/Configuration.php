@@ -58,7 +58,6 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('use_authentication_listener')->defaultTrue()->end()
                 ->booleanNode('use_listener')->defaultTrue()->end()
                 ->booleanNode('use_flash_notifications')->defaultTrue()->end()
-                ->booleanNode('use_username_form_type')->defaultTrue()->end()
                 ->arrayNode('from_email')
                     ->isRequired()
                     ->children()
@@ -74,19 +73,12 @@ class Configuration implements ConfigurationInterface
                 })
                 ->thenInvalid('You need to specify your own user manager service when using the "custom" driver.')
             ->end()
-            ->validate()
-                ->ifTrue(function ($v) {
-                    return 'custom' === $v['db_driver'] && !empty($v['group']) && 'fos_user.group_manager.default' === $v['group']['group_manager'];
-                })
-                ->thenInvalid('You need to specify your own group manager service when using the "custom" driver.')
-            ->end();
+        ;
 
         $this->addProfileSection($rootNode);
-        $this->addChangePasswordSection($rootNode);
         $this->addRegistrationSection($rootNode);
         $this->addResettingSection($rootNode);
         $this->addServiceSection($rootNode);
-        $this->addGroupSection($rootNode);
 
         return $treeBuilder;
     }
@@ -193,30 +185,6 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addChangePasswordSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->arrayNode('change_password')
-                    ->addDefaultsIfNotSet()
-                    ->canBeUnset()
-                    ->children()
-                        ->arrayNode('form')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('type')->defaultValue(Type\ChangePasswordFormType::class)->end()
-                                ->scalarNode('name')->defaultValue('fos_user_change_password_form')->end()
-                                ->arrayNode('validation_groups')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(['ChangePassword', 'Default'])
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
     private function addServiceSection(ArrayNodeDefinition $node)
     {
         $node
@@ -230,32 +198,6 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('token_generator')->defaultValue('fos_user.util.token_generator.default')->end()
                             ->scalarNode('username_canonicalizer')->defaultValue('fos_user.util.canonicalizer.default')->end()
                             ->scalarNode('user_manager')->defaultValue('fos_user.user_manager.default')->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    private function addGroupSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->arrayNode('group')
-                    ->canBeUnset()
-                    ->children()
-                        ->scalarNode('group_class')->isRequired()->cannotBeEmpty()->end()
-                        ->scalarNode('group_manager')->defaultValue('fos_user.group_manager.default')->end()
-                        ->arrayNode('form')
-                            ->addDefaultsIfNotSet()
-                            ->fixXmlConfig('validation_group')
-                            ->children()
-                                ->scalarNode('type')->defaultValue(Type\GroupFormType::class)->end()
-                                ->scalarNode('name')->defaultValue('fos_user_group_form')->end()
-                                ->arrayNode('validation_groups')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(['Registration', 'Default'])
-                                ->end()
-                            ->end()
                         ->end()
                     ->end()
                 ->end()

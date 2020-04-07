@@ -14,6 +14,7 @@ namespace FOS\UserBundle\Tests\EventListener;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\EventListener\AuthenticationListener;
 use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Security\LoginManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -43,7 +44,7 @@ class AuthenticationListenerTest extends TestCase
             ->expects($this->once())
             ->method('dispatch');
 
-        $loginManager = $this->getMockBuilder('FOS\UserBundle\Security\LoginManagerInterface')->getMock();
+        $loginManager = $this->createMock(LoginManagerInterface::class);
 
         $this->listener = new AuthenticationListener($loginManager, self::FIREWALL_NAME);
     }

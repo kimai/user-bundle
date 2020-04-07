@@ -87,10 +87,6 @@ class FOSUserExtension extends Extension
             }
         }
 
-        if ($config['use_username_form_type']) {
-            $loader->load('username_form_type.xml');
-        }
-
         $this->remapParametersNamespaces($config, $container, [
             '' => [
                 'db_driver' => 'fos_user.storage',
@@ -100,24 +96,12 @@ class FOSUserExtension extends Extension
             ],
         ]);
 
-        if (!empty($config['profile'])) {
-            $this->loadProfile($config['profile'], $container, $loader);
-        }
-
         if (!empty($config['registration'])) {
             $this->loadRegistration($config['registration'], $container, $loader, $config['from_email']);
         }
 
-        if (!empty($config['change_password'])) {
-            $this->loadChangePassword($config['change_password'], $container, $loader);
-        }
-
         if (!empty($config['resetting'])) {
             $this->loadResetting($config['resetting'], $container, $loader, $config['from_email']);
-        }
-
-        if (!empty($config['group'])) {
-            $this->loadGroups($config['group'], $container, $loader, $config['db_driver']);
         }
 
         if ($this->mailerNeeded) {
@@ -168,15 +152,6 @@ class FOSUserExtension extends Extension
         }
     }
 
-    private function loadProfile(array $config, ContainerBuilder $container, XmlFileLoader $loader)
-    {
-        $loader->load('profile.xml');
-
-        $this->remapParametersNamespaces($config, $container, [
-            'form' => 'fos_user.profile.form.%s',
-        ]);
-    }
-
     private function loadRegistration(array $config, ContainerBuilder $container, XmlFileLoader $loader, array $fromEmail)
     {
         $loader->load('registration.xml');
@@ -200,15 +175,6 @@ class FOSUserExtension extends Extension
         ]);
     }
 
-    private function loadChangePassword(array $config, ContainerBuilder $container, XmlFileLoader $loader)
-    {
-        $loader->load('change_password.xml');
-
-        $this->remapParametersNamespaces($config, $container, [
-            'form' => 'fos_user.change_password.form.%s',
-        ]);
-    }
-
     private function loadResetting(array $config, ContainerBuilder $container, XmlFileLoader $loader, array $fromEmail)
     {
         $this->mailerNeeded = true;
@@ -228,31 +194,6 @@ class FOSUserExtension extends Extension
             ],
             'email' => 'fos_user.resetting.email.%s',
             'form' => 'fos_user.resetting.form.%s',
-        ]);
-    }
-
-    /**
-     * @param string $dbDriver
-     */
-    private function loadGroups(array $config, ContainerBuilder $container, XmlFileLoader $loader, $dbDriver)
-    {
-        $loader->load('group.xml');
-        if ('custom' !== $dbDriver) {
-            if (isset(self::$doctrineDrivers[$dbDriver])) {
-                $loader->load('doctrine_group.xml');
-            } else {
-                $loader->load(sprintf('%s_group.xml', $dbDriver));
-            }
-        }
-
-        $container->setAlias('fos_user.group_manager', new Alias($config['group_manager'], true));
-        $container->setAlias('FOS\UserBundle\Model\GroupManagerInterface', new Alias('fos_user.group_manager', false));
-
-        $this->remapParametersNamespaces($config, $container, [
-            '' => [
-                'group_class' => 'fos_user.model.group.class',
-            ],
-            'form' => 'fos_user.group.form.%s',
         ]);
     }
 }
