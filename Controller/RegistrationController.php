@@ -179,7 +179,12 @@ class RegistrationController extends AbstractController
      */
     private function getTargetUrlFromSession(SessionInterface $session)
     {
-        $key = sprintf('_security.%s.target_path', $this->tokenStorage->getToken()->getProviderKey());
+        $token = $this->tokenStorage->getToken();
+        if (!method_exists($token, 'getProviderKey')) {
+            return null;
+        }
+
+        $key = sprintf('_security.%s.target_path', $token->getProviderKey());
 
         if ($session->has($key)) {
             return $session->get($key);
