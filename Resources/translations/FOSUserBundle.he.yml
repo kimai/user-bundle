@@ -18,7 +18,7 @@ security:
 profile:
     show:
         username: 'שם משתמש'
-        email: 'דוא"ל'
+        email: 'דואר אלקטרוני'
     edit:
         submit: עדכון
     flash:
@@ -28,7 +28,7 @@ change_password:
     flash:
         success: 'הסיסמה שונתה בהצלחה.'
 registration:
-    check_email: 'הודעה בדוא"ל נשלחה ל-%email%. ההודעה מכילה קישור להפעלת חשבון משתמש שלך. יש ללחוץ על הקישור כדי להפעיל את החשבון.'
+    check_email: 'הודעה בדואר אלקטרוני נשלחה ל-%email%. ההודעה מכילה קישור להפעלת חשבון משתמש שלך. יש ללחוץ על הקישור כדי להפעיל את החשבון.'
     confirmed: 'ברוכים הבאים %username%, חשבון שלך הופעל.'
     back: 'השב לדף הקודם.'
     submit: הרשם
@@ -66,7 +66,7 @@ resetting:
         message: |
             %username% שלום רב,
 
-            כדי לאפס סיסמה שלך יש ללחוץ %confirmationUrl%
+            כדי לאפס את הסיסמה שלך יש ללחוץ %confirmationUrl%
 
             בברכה,
                הצוות.
@@ -81,8 +81,8 @@ layout:
 form:
     group_name: 'שם קבוצה'
     username: 'שם משתמש'
-    email: 'דוא\"ל'
-    current_password: 'סיסמה נוכחות'
+    email: 'דואר אלקטרוני'
+    current_password: 'סיסמה נוכחית'
     password: סיסמה
     password_confirmation: 'אימות סיסמה'
     new_password: 'סיסמה חדשה'
