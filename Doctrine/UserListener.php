@@ -12,8 +12,9 @@
 namespace FOS\UserBundle\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\PreUpdateEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
@@ -61,7 +62,7 @@ class UserListener implements EventSubscriber
     /**
      * Pre update listener based on doctrine common.
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         $object = $args->getObject();
         if ($object instanceof UserInterface) {
