@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 2.0
+
+Bump required PHP version to >= 7.3
+
 ### 1.2
 
 - fixed several event deprecations
