@@ -1,6 +1,15 @@
 Changelog
 =========
 
+### 2.0
+
+Bump required PHP version to >= 7.3
+
+Possible BC break (higher Doctrine version might be needed):
+- require `Doctrine\Persistence\Event\LifecycleEventArgs` instead of `Doctrine\Common\Persistence\Event\LifecycleEventArgs`
+- require `Doctrine\Persistence\ObjectManager` instead of `Doctrine\Common\Persistence\ObjectManager`
+- require `Doctrine\Persistence\ObjectRepository` instead of `Doctrine\Common\Persistence\ObjectRepository`
+
 ### 1.2
 
 - fixed several event deprecations
