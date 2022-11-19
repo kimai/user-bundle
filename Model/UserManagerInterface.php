@@ -84,7 +84,7 @@ interface UserManagerInterface
     /**
      * Returns a collection with all user instances.
      *
-     * @return \Traversable
+     * @return array
      */
     public function findUsers();
 

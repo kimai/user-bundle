@@ -32,12 +32,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('fos_user');
-
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            $rootNode = $treeBuilder->root('fos_user');
-        }
+        /** @var ArrayNodeDefinition $rootNode */
+        $rootNode = $treeBuilder->getRootNode();
 
         $supportedDrivers = ['orm', 'custom'];
 
@@ -46,7 +42,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('db_driver')
                     ->validate()
                         ->ifNotInArray($supportedDrivers)
-                        ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers))
+                        ->thenInvalid('The driver %s is not supported. Please choose one of: '.implode(', ', $supportedDrivers))
                     ->end()
                     ->cannotBeOverwritten()
                     ->isRequired()
@@ -75,37 +71,11 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        $this->addProfileSection($rootNode);
         $this->addRegistrationSection($rootNode);
         $this->addResettingSection($rootNode);
         $this->addServiceSection($rootNode);
 
         return $treeBuilder;
-    }
-
-    private function addProfileSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->arrayNode('profile')
-                    ->addDefaultsIfNotSet()
-                    ->canBeUnset()
-                    ->children()
-                        ->arrayNode('form')
-                            ->addDefaultsIfNotSet()
-                            ->fixXmlConfig('validation_group')
-                            ->children()
-                                ->scalarNode('type')->defaultValue(Type\ProfileFormType::class)->end()
-                                ->scalarNode('name')->defaultValue('fos_user_profile_form')->end()
-                                ->arrayNode('validation_groups')
-                                    ->prototype('scalar')->end()
-                                    ->defaultValue(['Profile', 'Default'])
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
     }
 
     private function addRegistrationSection(ArrayNodeDefinition $node)

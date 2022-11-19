@@ -23,7 +23,7 @@ class UserEvent extends Event
     protected $request;
 
     /**
-     * @var UserInterface
+     * @var UserInterface|null
      */
     protected $user;
 

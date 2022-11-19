@@ -13,6 +13,7 @@ namespace FOS\UserBundle\Command;
 
 use FOS\UserBundle\Util\UserManipulator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -105,8 +106,10 @@ EOT
             $questions['password'] = $question;
         }
 
+        /** @var QuestionHelper $helper */
+        $helper = $this->getHelper('question');
         foreach ($questions as $name => $question) {
-            $answer = $this->getHelper('question')->ask($input, $output, $question);
+            $answer = $helper->ask($input, $output, $question);
             $input->setArgument($name, $answer);
         }
     }
