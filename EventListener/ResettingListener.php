@@ -62,7 +62,7 @@ class ResettingListener implements EventSubscriberInterface
 
     public function onResettingResetSuccess(FormEvent $event)
     {
-        /** @var $user \FOS\UserBundle\Model\UserInterface */
+        /** @var \FOS\UserBundle\Model\UserInterface $user */
         $user = $event->getForm()->getData();
 
         $user->setConfirmationToken(null);

@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### 3.0
+
+Cleanup and support for PHP 8.1
+
+- Added phpstan level 5 (`vendor/bin/phpstan analyse -c phpstan.neon .`)
+- Removed profile section from Configuration 
+- Some changes that might lead to tiny BC breaks ... who knows (this bundle should NOT BE USED ANYWAYS!) 
+
 ### 2.0
 
 Bump required PHP version to >= 7.3

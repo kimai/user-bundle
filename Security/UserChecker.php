@@ -11,6 +11,7 @@
 
 namespace FOS\UserBundle\Security;
 
+use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccountExpiredException;
 use Symfony\Component\Security\Core\Exception\CredentialsExpiredException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
@@ -26,7 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 class UserChecker extends BaseUserChecker
 {
     /**
-     * {@inheritdoc}
+     * @param UserInterface $user
+     * @return void
      */
     public function checkPreAuth(BaseUserInterface $user)
     {
@@ -50,7 +52,8 @@ class UserChecker extends BaseUserChecker
     }
 
     /**
-     * {@inheritdoc}
+     * @param UserInterface $user
+     * @return void
      */
     public function checkPostAuth(BaseUserInterface $user)
     {

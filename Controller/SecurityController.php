@@ -42,7 +42,7 @@ class SecurityController extends AbstractController
      */
     public function loginAction(Request $request)
     {
-        /** @var $session Session */
+        /** @var Session $session */
         $session = $request->getSession();
 
         $authErrorKey = Security::AUTHENTICATION_ERROR;
